@@ -1,0 +1,27 @@
+* {
+  font-family: "Satoshi", sans-serif;
+  font-family: "General Sans", sans-serif;
+  font-family: "Bespoke Sans", sans-serif;
+  font-family: "RX100", sans-serif;
+  user-select: none;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 4px; /* Set width to be very small */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #22c55e; /* Tailwind's green-500 color */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: set background track color */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: #22c55e transparent; /* Thumb color and track color */
+}
