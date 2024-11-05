@@ -4,6 +4,7 @@ import {
   login,
   logout,
   users,
+  updateUser,
 } from "../controllers/auth.controller.js";
 import ProtectedRoute from "../middlewares/protectedRoute.js";
 
@@ -13,6 +14,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/users", users);
+router.put("/user", ProtectedRoute, updateUser);
 router.get("/me", ProtectedRoute, async (req, res) => {
   try {
     return res.status(200).json({

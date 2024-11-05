@@ -40,7 +40,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="flex ">
-      <div className="flex items-center justify-center  w-full absolute sm:hidden gap-2 bottom-[5%]    ">
+      <div className="flex items-center justify-center  w-full  sm:hidden gap-2 bottom-[10%]  fixed  ">
         <div className=" flex gap-4 rounded-md  backdrop-blur-md  p-2 border z-[999]">
           {menuBar.map((item, index) => (
             <div
@@ -65,7 +65,10 @@ const DashboardLayout = () => {
       </div>
       <div className="flex justify-between w-full  h-[100vh] ">
         <div className="md:w-[20%]  items-start   flex-col border shadow-xl hidden sm:flex">
-          <div className=" flex items-center gap-2 p-2 mt-5">
+          <div
+            className=" flex items-center gap-2 p-2 mt-5"
+            onClick={() => navigate("/")}
+          >
             <img src="./logo.svg" alt="" />
 
             <p className="font-bold text-xl hidden lg:block">

@@ -11,7 +11,7 @@ const Faq = ({
     <div className="px-2 flex justify-center items-center mt-2 sm:w-[80%] md:w-[60%] lg:w-[50%]">
       <div className="w-full">
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out bg-gray-100 p-2 rounded-md`}
+          className={`overflow-hidden transition-all duration-300 ease-in-out bg-green-200 p-2 rounded-md`}
         >
           <div
             className="flex justify-between items-center cursor-pointer"

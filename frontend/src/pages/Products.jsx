@@ -13,15 +13,7 @@ const Products = () => {
   const { data } = useContext(UserContext);
 
   const baseUrl = import.meta.env.VITE_APP_API_URL;
-  // console.log(`${baseUrl}/api/products/product`);
-  // const { data, error, isLoading } = useQuery({
-  //   queryKey: ["product"],
-  //   queryFn: async () => {
-  //     const response = await axios.get(`${baseUrl}/api/products/product`);
-  //     return response.data;
-  //   },
-  // });
-  // console.log(data);
+
   const [searchProduct, setSearchProduct] = useState(null);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
@@ -59,7 +51,7 @@ const Products = () => {
   return (
     <div>
       <div className="p-4 flex justify-between items-center flex-wrap gap-3">
-        <h1 className="text-2xl">Products</h1>
+        <h1 className="text-2xl">Products ({data?.products?.length})</h1>
         <div className="p-2 flex border border-gray-300 rounded-md  gap-2 bg-gray-100 w-[50%] ">
           <IoIosSearch className="text-2xl text-gray-400  " />
           <input

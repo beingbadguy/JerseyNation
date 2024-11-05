@@ -15,7 +15,7 @@ const Users = () => {
       return response.data;
     },
   });
-  console.log(data);
+  // console.log(data);
 
   const [searchUser, setSearchUser] = useState(null);
   const [search, setSearch] = useState("");
@@ -27,12 +27,13 @@ const Users = () => {
     });
     setSearchUser(user);
   };
-  console.log(searchUser);
+  // console.log(searchUser);
 
   return (
     <div className="">
       <div className="p-4 flex justify-between items-center">
-        <h1 className="text-2xl">Customers</h1>
+        <h1 className="text-2xl">Customers ({data?.users?.length
+        })</h1>
         <div className="p-2 flex border border-gray-300 rounded-md  gap-2 bg-gray-100 w-[50%] ">
           <IoIosSearch className="text-2xl text-gray-400  " />
           <input
@@ -67,7 +68,10 @@ const Users = () => {
                   <div>{user.name}</div>
                   <div>{user.email}</div>
                   {/* <div>{user.role}</div> */}
-                  <div>{user.orders.length} <span className="sm:hidden">Orders</span></div>
+                  <div>
+                    {user.orders.length}{" "}
+                    <span className="sm:hidden">Orders</span>
+                  </div>
                 </div>
               ))}
             </div>

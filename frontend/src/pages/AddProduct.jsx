@@ -13,6 +13,7 @@ import { TailSpin } from "react-loader-spinner";
 const AddProduct = () => {
   const navigate = useNavigate();
   const imageRef = useRef();
+  const altImageRef = useRef(); // Reference for alt image
   const queryClient = useQueryClient();
   const baseUrl = import.meta.env.VITE_APP_API_URL;
 
@@ -31,7 +32,9 @@ const AddProduct = () => {
     quantity: "",
     category: "",
   });
+  // console.log(productData);
   const [image, setImage] = useState(null);
+  const [altImage, setAltImage] = useState(null); // State for alt image
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
 
@@ -47,6 +50,10 @@ const AddProduct = () => {
     setImage(e.target.files[0]);
   };
 
+  const handleAltImageChange = (e) => {
+    setAltImage(e.target.files[0]); // Handle alt image change
+  };
+
   const addProductMutation = useMutation({
     mutationFn: async (newProduct) => {
       setUploading(true);
@@ -56,6 +63,9 @@ const AddProduct = () => {
       });
       if (image) {
         formData.append("image", image);
+      }
+      if (altImage) {
+        formData.append("altImage", altImage); // Append alt image
       }
       return await axios.post(`${baseUrl}/api/products/create`, formData, {
         headers: {
@@ -75,7 +85,9 @@ const AddProduct = () => {
         category: "",
       });
       URL.revokeObjectURL(image);
+      URL.revokeObjectURL(altImage);
       setImage(null);
+      setAltImage(null); // Reset alt image
       console.log("Product added successfully!");
       navigate("/dashboard/products");
     },
@@ -93,9 +105,9 @@ const AddProduct = () => {
       !productData.description ||
       !productData.quantity ||
       !productData.category ||
-      image === null
+      image === null ||
+      altImage === null // Check if alt image is provided
     ) {
-      //   alert("Please fill in all required fields.");
       setUploadError("Please fill in all required fields.");
       return;
     } else {
@@ -115,7 +127,9 @@ const AddProduct = () => {
           />
           <p>Back to the Product List</p>
         </div>
-        <div className="font-bold text-2xl text-green-500 hidden">Add Product</div>
+        <div className="font-bold text-2xl text-green-500 hidden">
+          Add Product
+        </div>
       </div>
       <hr />
 
@@ -207,40 +221,21 @@ const AddProduct = () => {
           </div>
         </div>
 
-        {/* Product Image */}
-        <div className="flex flex-col py-4">
-          <label htmlFor="productImage" className="font-bold">
-            Product Image
-          </label>
-          <div
-            className="h-[100px] rounded-xl flex items-center justify-center border-4 border-dashed cursor-pointer"
-            onClick={() => imageRef.current.click()}
-          >
-            <CiImageOn className="text-3xl" />
-          </div>
-          <input
-            ref={imageRef}
-            type="file"
-            id="productImage"
-            hidden
-            onChange={handleImageChange}
-          />
-        </div>
-        <div className="flex items-start justify-between">
+        <div className="flex items-center justify-between gap-2">
           <div className="relative">
             <img
               src={
                 image ? URL.createObjectURL(image) : URL.revokeObjectURL(image)
               }
-              alt=""
-              className={`h-60 rounded-md  ${
-                image ? "border border-gray-300" : ""
+              alt="Product"
+              className={`h-60 rounded-md ${
+                image ? "border border-gray-300 my-6 object-cover" : "hidden"
               }`}
             />
             <div
-              className={` ${
+              className={`${
                 image ? "" : "hidden"
-              } bg-gray-300 p-2 absolute top-1 right-1 rounded-full hover:scale-[0.8] cursor-pointer transition-all duration-500`}
+              } bg-gray-300 p-2 absolute top-7 right-2 rounded-full hover:scale-[0.8] cursor-pointer transition-all duration-500`}
               onClick={() => {
                 URL.revokeObjectURL(image);
                 setImage(null);
@@ -249,6 +244,75 @@ const AddProduct = () => {
               <MdOutlineClose />
             </div>
           </div>
+          <div className="relative">
+            <img
+              src={
+                altImage
+                  ? URL.createObjectURL(altImage)
+                  : URL.revokeObjectURL(altImage)
+              }
+              alt="Product"
+              className={`h-60 rounded-md ${
+                altImage ? "border border-gray-300 my-6 object-cover" : "hidden"
+              }`}
+            />
+            <div
+              className={`${
+                altImage ? "" : "hidden"
+              } bg-gray-300 p-2 absolute top-7 right-2 rounded-full hover:scale-[0.8] cursor-pointer transition-all duration-500`}
+              onClick={() => {
+                URL.revokeObjectURL(altImage);
+                setAltImage(null);
+              }}
+            >
+              <MdOutlineClose />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          {/* Product Image */}
+          <div className="flex flex-col py-4">
+            <label htmlFor="productImage" className="font-bold">
+              Product Image
+            </label>
+            <div
+              className="h-[100px] rounded-xl flex items-center justify-center border-4 border-dashed cursor-pointer"
+              onClick={() => imageRef.current.click()}
+            >
+              <CiImageOn className="text-3xl" />
+            </div>
+            <input
+              ref={imageRef}
+              type="file"
+              id="productImage"
+              hidden
+              onChange={handleImageChange}
+            />
+          </div>
+
+          {/* Alt Image */}
+          <div className="flex flex-col py-4">
+            <label htmlFor="altImage" className="font-bold">
+              Alt Product Image
+            </label>
+            <div
+              className="h-[100px] rounded-xl flex items-center justify-center border-4 border-dashed cursor-pointer"
+              onClick={() => altImageRef.current.click()}
+            >
+              <CiImageOn className="text-3xl" />
+            </div>
+            <input
+              ref={altImageRef}
+              type="file"
+              id="altImage"
+              hidden
+              onChange={handleAltImageChange}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-start justify-between">
           <div>
             <p className="text-red-500 font-bold">{uploadError}</p>
 
@@ -268,7 +332,7 @@ const AddProduct = () => {
                   wrapperClass=""
                 />
               ) : (
-                <div className="flex items-center  gap-2">
+                <div className="flex items-center gap-2">
                   Add Product
                   <IoIosAirplane className="text-xl" />
                 </div>

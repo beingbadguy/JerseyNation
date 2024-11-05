@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import cloudinary from "cloudinary";
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -98,6 +99,7 @@ export const login = async (req, res) => {
     }
     generateTokenAndSetCookie(user._id, res);
     const UserData = await User.findById(user._id).select("-password");
+
     res.status(200).json({
       status: true,
       message: "User logged in successfully",
@@ -137,5 +139,57 @@ export const users = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const updateUser = async (req, res) => {
+  const { name, address, phone } = req.body;
+  const avatar = req.files?.avatar;
+
+  try {
+    const userExists = await User.findById(req.user._id);
+
+    if (!userExists) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    if (!address || !phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Address and phone are required",
+      });
+    }
+
+    let imageUploadResult;
+    if (avatar) {
+      imageUploadResult = await cloudinary.v2.uploader.upload(
+        avatar.tempFilePath,
+        {
+          folder: "profile",
+        }
+      );
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        name: name || userExists.name,
+        address,
+        phone,
+        avatar: imageUploadResult?.secure_url || userExists.avatar,
+      },
+      { new: true }
+    ).select("-password");
+
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };

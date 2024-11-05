@@ -1,14 +1,16 @@
 import Category from "../models/category.model.js";
+import cloudinary from "cloudinary";
 
 export const createCategory = async (req, res) => {
   const { name } = req.body;
+  const file = req.files.image;
 
   try {
     //   validate
-    if (!name) {
+    if (!name || !file) {
       return res
         .status(400)
-        .json({ success: false, message: "Name is required" });
+        .json({ success: false, message: "Name & Image is required" });
     }
     // check if category exists already
     const categoryExists = await Category.findOne({ name });
@@ -17,8 +19,18 @@ export const createCategory = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Category already exists" });
     }
+
+    const imageUploadResult = await cloudinary.v2.uploader.upload(
+      file.tempFilePath,
+      {
+        folder: "categories", // Optional: specify a folder in Cloudinary
+      }
+    );
     //create a new category
-    const category = await Category.create({ name });
+    const category = await Category.create({
+      name,
+      image: imageUploadResult.secure_url,
+    });
     return res.status(200).json({
       success: true,
       message: "Category created successfully",

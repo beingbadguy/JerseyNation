@@ -18,6 +18,16 @@ import MainContext from "./Context/UserContext.jsx";
 import axios from "axios";
 import SingleProduct from "./pages/SingleProduct.jsx";
 import Categories from "./pages/Categories.jsx";
+import SingleCategory from "./pages/SingleCategory.jsx";
+import SearchResult from "./pages/SearchResult.jsx";
+import Wishlist from "./pages/Wishlist.jsx";
+import Cart from "../../backend/models/cart.model.js";
+import Carts from "./pages/Carts.jsx";
+import Checkout from "./pages/Checkout.jsx";
+import User from "./pages/User.jsx";
+import Confirm from "./pages/Confirm.jsx";
+import UserOrder from "./pages/UserOrder.jsx";
+import Errorpage from "./pages/Errorpage.jsx";
 
 // Set axios to include credentials in every request
 axios.defaults.withCredentials = true;
@@ -42,6 +52,43 @@ const router = createBrowserRouter([
       {
         path: "product/:id",
         element: <SingleProduct />,
+      },
+      {
+        path: "category/:id",
+        element: <SingleCategory />,
+      },
+      {
+        path: "search/:name",
+        element: <SearchResult />,
+      },
+      {
+        path: "wishlist",
+        element: <Wishlist />,
+      },
+      {
+        path: "cart",
+        element: <Carts />,
+      },
+      {
+        path: "checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "user",
+        element: <User />,
+      },
+
+      {
+        path: "confirm/:id",
+        element: <Confirm />,
+      },
+      {
+        path: "order",
+        element: <UserOrder />,
+      },
+      {
+        path: "*",
+        element: <Errorpage />,
       },
     ],
   },
@@ -77,7 +124,15 @@ const router = createBrowserRouter([
         path: "categories",
         element: <Categories />,
       },
+      {
+        path: "*",
+        element: <Errorpage />,
+      },
     ],
+  },
+  {
+    path: "*",
+    element: <Errorpage />,
   },
 ]);
 createRoot(document.getElementById("root")).render(

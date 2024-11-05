@@ -4,6 +4,7 @@ import cloudinary from "cloudinary";
 export const createProduct = async (req, res) => {
   const { name, price, description, quantity, category } = req.body;
   const file = req.files.image;
+  const altFile = req.files.altImage;
 
   try {
     // Validate input fields
@@ -25,6 +26,13 @@ export const createProduct = async (req, res) => {
       }
     );
 
+    const imageUploadResult2 = await cloudinary.v2.uploader.upload(
+      altFile.tempFilePath,
+      {
+        folder: "products", // Optional: specify a folder in Cloudinary
+      }
+    );
+
     // Create a new product
     const product = await Product.create({
       name,
@@ -32,6 +40,7 @@ export const createProduct = async (req, res) => {
       description,
       quantity,
       image: imageUploadResult.secure_url, // Store the Cloudinary image URL
+      altImage: imageUploadResult2.secure_url, // Store the Cloudinary image URL
       category, //also add the category
     });
     await Category.findByIdAndUpdate(category, {
@@ -85,7 +94,10 @@ export const getSingleProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
   try {
     // Fetch all products
-    const products = await Product.find();
+    const products = await Product.find().populate({
+      path: "category",
+      select: "name",
+    });
     return res.status(200).json({
       success: true,
       products,
@@ -124,10 +136,10 @@ export const deleteProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, description, quantity, category } = req.body;
+    const { name, price, description, quantity, category, size } = req.body;
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
-      { name, price, description, quantity, category },
+      { name, price, description, quantity, category, size },
       { new: true }
     );
     if (!updatedProduct) {

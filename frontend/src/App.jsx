@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Dashboard from "./pages/Dashboard";
 import Newletter from "./components/Newletter";
 import Faq from "./components/Faq";
@@ -7,14 +7,24 @@ import Gallery from "./components/Gallery";
 import Product from "./components/Product";
 import { UserContext } from "./Context/UserContext";
 import ShopCategories from "./pages/ShopCategories";
+import Hero from "./components/Hero";
+import OffersMarquee from "./components/OffersMarquee";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
   // const { wishlist } = useContext(UserContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [navigate]);
+
   return (
     <div className="min-h-[73vh] mt-14 sm:mt-0 ">
       {/* <p>This is the react app</p> */}
       {/* <Gallery /> */}
+      <Hero />
       <ShopCategories />
+      <OffersMarquee />
       <Product />
       <img
         src="https://images.unsplash.com/photo-1550591852-c88075851174?q=80&w=2531&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -22,7 +32,7 @@ const App = () => {
         className="h-[400px] object-cover w-full brightness-75"
       />
       {/* <Popular /> */}
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center gap-1">
         <p className=" text-2xl sm:text-3xl my-4 mt-10">
           Frequently Asked Questions
         </p>

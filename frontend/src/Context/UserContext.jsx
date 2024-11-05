@@ -9,6 +9,7 @@ const MainContext = ({ children }) => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("JerseyNation"))
   );
+  // console.log(user);
 
   const baseUrl = import.meta.env.VITE_APP_API_URL;
   // console.log(`${baseUrl}/api/products/product`);
@@ -35,6 +36,37 @@ const MainContext = ({ children }) => {
 
   // console.log(wishlist);
 
+  const {
+    data: cart,
+    error: cartError,
+    isLoading: cartLoading,
+  } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
+      const response = await axios.get(`${baseUrl}/api/carts/getCart`);
+      return response.data;
+    },
+  });
+  // console.log(cart);
+
+  const AddToCart = useMutation({
+    mutationKey: ["addToCart"],
+    mutationFn: async ({ productId, quantity, size }) => {
+      const response = await axios.post(
+        `${baseUrl}/api/carts/add/${productId}`,
+        { quantity, size }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["cart"]);
+      console.log("Product added to cart successfully");
+    },
+    onError: (error) => {
+      console.error("Error adding product to cart:", error);
+    },
+  });
+
   const likehandle = useMutation({
     mutationKey: ["likeProduct"],
     mutationFn: async (id) => {
@@ -51,9 +83,26 @@ const MainContext = ({ children }) => {
     likehandle.mutate(id);
   };
 
+  const { data: allCategories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const response = await axios.get(`${baseUrl}/api/categories`);
+      return response.data;
+    },
+  });
+
   return (
     <UserContext.Provider
-      value={{ user, setUser, data, likeHandler, wishlist }}
+      value={{
+        user,
+        setUser,
+        data,
+        likeHandler,
+        wishlist,
+        allCategories,
+        cart,
+        AddToCart,
+      }}
     >
       {children}
     </UserContext.Provider>

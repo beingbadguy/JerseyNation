@@ -11,8 +11,8 @@ import { useEffect } from "react";
 const Signup = () => {
   const { user, setUser } = useContext(UserContext);
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const baseUrl = import.meta.env.VITE_APP_API_URL;
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -39,6 +39,7 @@ const Signup = () => {
         );
         queryClient.setQueryData(["user"], response.data.user);
         navigate("/");
+        window.location.reload();
         setLoading(false);
       } catch (error) {
         console.error("Error details:", error.response?.data || error.message);
@@ -57,6 +58,9 @@ const Signup = () => {
     if (userForm.email === "" || userForm.password === "") {
       console.log("Please enter all the fields");
       setError("Please enter all the fields");
+    } else if (userForm.password.length < 6) {
+      console.log("Password must be at least 6 characters long");
+      setError("Password must be at least 6 characters long");
     } else {
       loginUser.mutate(userForm);
     }
@@ -70,7 +74,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center flex-col gap-6 ">
-      <div className="border p-6 sm:p-10 shadow-md rounded-md lg:w-[30%]">
+      <div className="md:border p-6 mt-20 sm:p-12 md:shadow-md rounded-md lg:w-[30%]">
         <div className="flex justify-center items-center gap-1 flex-col">
           <img src="./logo.svg" alt="jerseyNation-logo" className="h-7" />
           <p className="font-bold text-2xl">Welcome Back</p>

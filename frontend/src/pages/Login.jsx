@@ -39,6 +39,8 @@ const Login = () => {
         );
         queryClient.setQueryData(["user"], response.data.user);
         navigate("/");
+        window.location.reload();
+
         setLoading(false);
       } catch (error) {
         console.error("Error details:", error.response?.data || error.message);
@@ -68,7 +70,7 @@ const Login = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center flex-col gap-6 ">
-      <div className="border p-6 sm:p-10 shadow-md rounded-md lg:w-[30%]">
+      <div className="md:border p-6 mt-20 sm:p-12 md:shadow-md rounded-md lg:w-[30%]">
         <div className="flex justify-center items-center gap-1 flex-col">
           <img src="./logo.svg" alt="jerseyNation-logo" className="h-7" />
 

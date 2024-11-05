@@ -59,7 +59,7 @@ const UpdateProduct = () => {
       });
     },
   });
-  console.log(actualProductData);
+  // console.log(actualProductData);
 
   const addProductMutation = useMutation({
     mutationFn: async (newProduct) => {
