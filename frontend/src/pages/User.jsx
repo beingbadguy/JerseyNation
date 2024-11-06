@@ -134,9 +134,10 @@ const User = () => {
           )}
 
           <div className="relative">
-            <p className="font-bold text-xl sm:text-2xl">{user?.name}</p>
+            <div className="font-bold text-xl sm:text-2xl flex gap-1 items-center" >
+              {user?.name} <GoVerified className="text-blue-400 text-lg" />
+            </div>
             <p className="text-sm sm:text-md">{user?.email}</p>
-            <GoVerified className="absolute top-0 right-10 sm:right-6 text-blue-400" />
           </div>
         </div>
         <div className="mr-10">
@@ -154,14 +155,22 @@ const User = () => {
       </div>
       <hr />
       <div className="m-4 flex flex-col gap-2">
-        <div className="flex gap-1 items-center">
-          <MdLocationPin />
-          <p>{user?.address}</p>
-        </div>
-        <div className="flex gap-1 items-center">
-          <MdLocalPhone />
-          <p>{user?.phone}</p>
-        </div>
+        {user?.address ? (
+          <div className="flex gap-1 items-center">
+            <MdLocationPin />
+            <p>{user?.address}</p>
+          </div>
+        ) : (
+          ""
+        )}
+        {user?.phone ? (
+          <div className="flex gap-1 items-center">
+            <MdLocalPhone />
+            <p>{user?.phone}</p>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="flex gap-1 items-center">
           <BiBarcodeReader />
           <p
@@ -177,7 +186,7 @@ const User = () => {
 
       <div
         className="absolute right-10  
-         top-[42%] sm:top-[40%] cursor-pointer text-black  rounded-full p-2 bg-gray-200 hover:bg-green-200 hover:text-green-500 "
+         top-[33%] sm:top-[32%] cursor-pointer text-black  rounded-full p-2 bg-gray-200 hover:bg-green-200 hover:text-green-500 "
         onClick={() => {
           setIsEditing(!isEditing);
         }}
