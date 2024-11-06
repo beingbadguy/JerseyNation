@@ -177,7 +177,7 @@ const User = () => {
 
       <div
         className="absolute right-10  
-         top-[33%] md:top-[33%] cursor-pointer text-black  rounded-full p-2 bg-gray-200 hover:bg-green-200 hover:text-green-500 "
+         top-[42%] sm:top-[40%] cursor-pointer text-black  rounded-full p-2 bg-gray-200 hover:bg-green-200 hover:text-green-500 "
         onClick={() => {
           setIsEditing(!isEditing);
         }}

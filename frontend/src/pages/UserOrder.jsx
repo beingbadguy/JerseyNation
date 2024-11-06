@@ -104,6 +104,9 @@ const UserOrder = () => {
                   <hr className="my-2" />
                   <div className="flex gap-2 items-center font-bold">
                     Grand Total :<p>₹{item.total}</p>
+                    <p className="font-normal text-gray-300">
+                      *including delivery
+                    </p>
                   </div>
                 </div>
               </div>
