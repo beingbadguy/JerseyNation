@@ -12,6 +12,7 @@ import categoryRouter from "./routes/category.routes.js";
 import wishlistRouter from "./routes/wishlist.routes.js";
 import cartRouter from "./routes/cart.routes.js";
 import checkoutRouter from "./routes/checkout.routes.js";
+import newsletterRouter from "./routes/newsletter.routes.js";
 import cors from "cors";
 
 configDotenv();
@@ -38,6 +39,7 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/wishlists", wishlistRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/checkouts", checkoutRouter);
+app.use("/api/newsletters", newsletterRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "frontend/dist")));
