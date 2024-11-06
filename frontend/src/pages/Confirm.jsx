@@ -16,11 +16,11 @@ const Confirm = () => {
   }, [id]);
 
   useEffect(() => {
-    if (cart || !id || id.length !== 24) {
+    if (!id || id.length !== 24) {
       navigate("/");
     }
     window.scrollTo(0, 0);
-  }, [cart, id, navigate]);
+  }, [id, navigate]);
 
   useEffect(() => {
     if (loading) {
