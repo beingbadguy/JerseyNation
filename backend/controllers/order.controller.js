@@ -45,7 +45,9 @@ export const createOrder = async (req, res) => {
     const savedOrder = await newOrder.save();
 
     // Populate the product details in each item
-    await Order.populate(savedOrder, { path: "items.product" });
+    const theorderdetails = await Order.populate(savedOrder, {
+      path: "items.product",
+    });
 
     // Delete the cart if it exists
     if (cartId) {
@@ -59,6 +61,9 @@ export const createOrder = async (req, res) => {
       { $unset: { cart: "" }, $push: { orders: savedOrder._id } },
       { new: true }
     );
+
+    // const theorderdetails = await Order.findById(savedOrder._id);
+    // console.log(theorderdetails.items[0].product.name);
 
     // console.log(updatedUser);
 
@@ -75,6 +80,41 @@ export const createOrder = async (req, res) => {
           <p>Hi ${userExists.name},</p>
           <p>Thank you for your order. We will send you a confirmation when your order ships.</p>
           
+
+          <p><strong>Order No:</strong> ${savedOrder._id}</p>
+
+     <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 5px; color: #007bff;">Order Details</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+              <tr style="background-color: #f4f8fb;">
+                <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">Product</th>
+                <th style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">Quantity</th>
+                <th style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${theorderdetails.items
+                .map(
+                  (item) => `
+                  <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.product.name}</td>
+                    <td style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">${item.quantity}</td>
+                    <td style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">₹${item.price}</td>
+                  </tr>
+                `
+                )
+                .join("")}
+            </tbody>
+          </table>
+
+          <p style="text-align: right; font-weight: bold; color: #007bff; margin-top: 10px;">Total: ₹${
+            total || 0
+          }</p>
+
+          <h3 style="margin-top: 20px; color: #007bff;">Shipping Address:</h3>
+          <p style="background-color: #f9f9f9; padding: 10px; border-radius: 5px;">${deliveryAddress}</p>
+        </section>
+
         <footer style="text-align: center; font-size: 0.8em; color: #888; padding: 10px 20px; background-color: #f1f1f1; border-radius: 0 0 8px 8px;">
           Team JerseyNation 
         </footer>
@@ -82,46 +122,6 @@ export const createOrder = async (req, res) => {
     </body>
   </html>
 `;
-
-    // <p><strong>Order No:</strong> ${savedOrder._id}</p>
-
-    //  <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 5px; color: #007bff;">Order Details</h3>
-    //       <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-    //         <thead>
-    //           <tr style="background-color: #f4f8fb;">
-    //             <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">Product</th>
-    //             <th style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">Quantity</th>
-    //             <th style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">Price</th>
-    //           </tr>
-    //         </thead>
-    //         <tbody>
-    //           ${items
-    //             .map(
-    //               (item) => `
-    //               <tr>
-    //                 <td style="padding: 10px; border-bottom: 1px solid #ddd;">${
-    //                   item.product.name || "N/A"
-    //                 }</td>
-    //                 <td style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">${
-    //                   item.quantity || 0
-    //                 }</td>
-    //                 <td style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">₹${
-    //                   item.price || 0
-    //                 }</td>
-    //               </tr>
-    //             `
-    //             )
-    //             .join("")}
-    //         </tbody>
-    //       </table>
-
-    //       <p style="text-align: right; font-weight: bold; color: #007bff; margin-top: 10px;">Total: ₹${
-    //         total || 0
-    //       }</p>
-
-    //       <h3 style="margin-top: 20px; color: #007bff;">Shipping Address:</h3>
-    //       <p style="background-color: #f9f9f9; padding: 10px; border-radius: 5px;">${deliveryAddress}</p>
-    //     </section>
 
     sendMail(
       userExists.email,
