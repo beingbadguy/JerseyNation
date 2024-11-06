@@ -19,7 +19,7 @@ export const sendNewsletter = async (req, res) => {
         
         <!-- Header -->
         <header style="background-color: #007bff; padding: 20px; text-align: center; color: #ffffff; border-radius: 8px 8px 0 0;">
-          <img src="https://your-logo-url.com/logo.png" alt="JerseyNation Logo" style="width: 80px; margin-bottom: 10px;">
+         
           <h1>Welcome to JerseyNation!</h1>
         </header>
 
