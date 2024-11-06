@@ -1,6 +1,7 @@
 import Cart from "../models/cart.model.js";
 import Order from "../models/order.model.js";
 import User from "../models/user.model.js";
+import sendMail from "../utils/confirmationMail.js";
 
 // Create a new order
 export const createOrder = async (req, res) => {
@@ -40,7 +41,11 @@ export const createOrder = async (req, res) => {
     });
 
     // Save the order
+    // Save the order first
     const savedOrder = await newOrder.save();
+
+    // Populate the product details in each item
+    await Order.populate(savedOrder, { path: "items.product" });
 
     // Delete the cart if it exists
     if (cartId) {
@@ -56,6 +61,74 @@ export const createOrder = async (req, res) => {
     );
 
     // console.log(updatedUser);
+
+    // sendmail logic
+    const emailTemplate = `
+  <html>
+    <body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;">
+      <div style="max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <header style="background-color: #007bff; padding: 10px; color: #ffffff; text-align: center; border-radius: 8px 8px 0 0;">
+          <h2>Yay! Your Order Is Confirmed</h2>
+        </header>
+
+        <section style="padding: 20px;">
+          <p>Hi ${userExists.name},</p>
+          <p>Thank you for your order. We will send you a confirmation when your order ships.</p>
+          
+        <footer style="text-align: center; font-size: 0.8em; color: #888; padding: 10px 20px; background-color: #f1f1f1; border-radius: 0 0 8px 8px;">
+          Team JerseyNation 
+        </footer>
+      </div>
+    </body>
+  </html>
+`;
+
+    // <p><strong>Order No:</strong> ${savedOrder._id}</p>
+
+    //  <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 5px; color: #007bff;">Order Details</h3>
+    //       <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+    //         <thead>
+    //           <tr style="background-color: #f4f8fb;">
+    //             <th style="text-align: left; padding: 10px; border-bottom: 1px solid #ddd;">Product</th>
+    //             <th style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">Quantity</th>
+    //             <th style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">Price</th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           ${items
+    //             .map(
+    //               (item) => `
+    //               <tr>
+    //                 <td style="padding: 10px; border-bottom: 1px solid #ddd;">${
+    //                   item.product.name || "N/A"
+    //                 }</td>
+    //                 <td style="text-align: center; padding: 10px; border-bottom: 1px solid #ddd;">${
+    //                   item.quantity || 0
+    //                 }</td>
+    //                 <td style="text-align: right; padding: 10px; border-bottom: 1px solid #ddd;">₹${
+    //                   item.price || 0
+    //                 }</td>
+    //               </tr>
+    //             `
+    //             )
+    //             .join("")}
+    //         </tbody>
+    //       </table>
+
+    //       <p style="text-align: right; font-weight: bold; color: #007bff; margin-top: 10px;">Total: ₹${
+    //         total || 0
+    //       }</p>
+
+    //       <h3 style="margin-top: 20px; color: #007bff;">Shipping Address:</h3>
+    //       <p style="background-color: #f9f9f9; padding: 10px; border-radius: 5px;">${deliveryAddress}</p>
+    //     </section>
+
+    sendMail(
+      userExists.email,
+      "JerseyNation: Order Confirmation",
+      ``,
+      emailTemplate
+    );
 
     res.status(201).json({
       success: true,
