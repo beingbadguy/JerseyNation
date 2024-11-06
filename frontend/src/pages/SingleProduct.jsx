@@ -60,7 +60,7 @@ const SingleProduct = () => {
 
   return (
     <div className="min-h-[80vh] mt-16 sm:mt-0 mb-10">
-      <hr />
+      {/* <hr /> */}
       <div className="mx-4 md:mx-10 flex items-center gap-2 mt-4">
         <p
           className="cursor-pointer text-black hover:underline"

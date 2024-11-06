@@ -10,6 +10,7 @@ import ShopCategories from "./pages/ShopCategories";
 import Hero from "./components/Hero";
 import OffersMarquee from "./components/OffersMarquee";
 import { useNavigate } from "react-router-dom";
+import Hero2 from "./components/Hero2";
 
 const App = () => {
   // const { wishlist } = useContext(UserContext);
@@ -22,7 +23,8 @@ const App = () => {
     <div className="min-h-[73vh] mt-14 sm:mt-0 ">
       {/* <p>This is the react app</p> */}
       {/* <Gallery /> */}
-      <Hero />
+      {/* <Hero /> */}
+      <Hero2 />
       <ShopCategories />
       <OffersMarquee />
       <Product />

@@ -47,7 +47,7 @@ const Layout = () => {
           </p>
         </div>
         {/* search */}
-        <div className="flex items-center justify-center border p-2 gap-2 sm:w-[50%] rounded border-gray-300 bg-gray-100 absolute top-[65px] w-[96%] sm:static left-2">
+        <div className="flex items-center justify-center border p-2 gap-2 sm:w-[50%] rounded border-gray-300 bg-gray-100 absolute top-[70px] w-[96%] sm:static left-2">
           <CgSearch className="text-2xl text-gray-400" />
           <input
             type="text"
