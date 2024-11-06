@@ -140,7 +140,7 @@ const User = () => {
             <p className="text-sm sm:text-md">{user?.email}</p>
           </div>
         </div>
-        <div className="mr-10">
+        <div className="mr-10 flex items-start gap-4 flex-row-reverse">
           <button
             onClick={() => {
               if (window.confirm("Are you sure you want to logout")) {
@@ -151,6 +151,18 @@ const User = () => {
           >
             <CiLogout />
           </button>
+          <div
+            className=" cursor-pointer text-black  rounded-full p-2 bg-gray-200 hover:bg-green-200 hover:text-green-500 "
+            onClick={() => {
+              setIsEditing(!isEditing);
+            }}
+          >
+            {isEditing ? (
+              <IoCloseOutline className="text-lg" />
+            ) : (
+              <CiEdit className="text-lg" />
+            )}
+          </div>
         </div>
       </div>
       <hr />
@@ -182,20 +194,6 @@ const User = () => {
             Orders
           </p>
         </div>
-      </div>
-
-      <div
-        className="absolute right-10  
-         top-[33%] sm:top-[32%] cursor-pointer text-black  rounded-full p-2 bg-gray-200 hover:bg-green-200 hover:text-green-500 "
-        onClick={() => {
-          setIsEditing(!isEditing);
-        }}
-      >
-        {isEditing ? (
-          <IoCloseOutline className="text-lg" />
-        ) : (
-          <CiEdit className="text-lg" />
-        )}
       </div>
 
       {/* edit items  */}

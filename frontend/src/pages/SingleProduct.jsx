@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { IoAdd, IoStarSharp } from "react-icons/io5";
 import { MdOutlineChevronRight } from "react-icons/md";
 import { RiShoppingBag3Line, RiSubtractLine } from "react-icons/ri";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
+import { useEffect } from "react";
 
 const SingleProduct = () => {
   const queryClient = useQueryClient();
@@ -20,7 +21,7 @@ const SingleProduct = () => {
 
   const allProducts = data?.products;
   const wishArr = wishlist?.wishlist?.items;
-
+  // console.log(quantity);
   const isLiked = (productId) => {
     return wishArr?.some((item) => item.product._id === productId);
   };
@@ -40,6 +41,7 @@ const SingleProduct = () => {
     },
   });
   const product = singleProduct?.product;
+  // console.log(product?.category?.name);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -49,6 +51,7 @@ const SingleProduct = () => {
   const jerseysize = ["xs", "sm", "md", "lg", "xl", "xxl"];
   const shoesize = ["6", "7", "8", "9", "10", "11", "12"];
   const footballsize = ["3", "4", "5", "6"];
+  // console.log(size);
 
   useEffect(() => {
     if (product) {
@@ -58,6 +61,7 @@ const SingleProduct = () => {
 
   return (
     <div className="min-h-[80vh] mt-16 sm:mt-0 mb-10">
+      {/* <hr /> */}
       <div className="mx-4 md:mx-10 flex items-center gap-2 mt-4">
         <p
           className="cursor-pointer text-black hover:underline"
@@ -102,35 +106,48 @@ const SingleProduct = () => {
           </div>
           <p className="text-gray-700">{product?.description}</p>
           <p className="text-xl font-bold">Stock: {product?.quantity}</p>
+          <div
+            className={` ${
+              product?.category?.name === "Cleats" ? "" : "hidden"
+            } ${
+              product?.category?.name === "Football" ? "hidden" : ""
+            } flex gap-4 p-2`}
+          >
+            {shoesize.map((_, i) => (
+              <div
+                key={i}
+                className={` ${
+                  size === _ ? "bg-green-500 text-white" : ""
+                } bg-gray-100 p-2 rounded cursor-pointer `}
+                onClick={() => {
+                  setSize(_);
+                }}
+              >
+                {_.toUpperCase()}
+              </div>
+            ))}
+          </div>
 
-          {/* Size Selection for Different Categories */}
-          <div className="flex gap-4 p-2">
-            {product?.category?.name === "Cleats" &&
-              footballsize.map((_, i) => (
-                <div
-                  key={i}
-                  className={`${
-                    size === _ ? "bg-green-500 text-white" : ""
-                  } bg-gray-100 p-2 rounded cursor-pointer`}
-                  onClick={() => setSize(_)}
-                >
-                  {_.toUpperCase()}
-                </div>
-              ))}
-
-            {product?.category?.name !== "Cleats" &&
-              product?.category?.name !== "Football" &&
-              jerseysize.map((_, i) => (
-                <div
-                  key={i}
-                  className={`${
-                    size === _ ? "bg-green-500 text-white" : ""
-                  } bg-gray-100 p-2 rounded cursor-pointer`}
-                  onClick={() => setSize(_)}
-                >
-                  {_.toUpperCase()}
-                </div>
-              ))}
+          <div
+            className={` ${
+              product?.category?.name !== "Cleats" ? "" : "hidden"
+            }${
+              product?.category?.name === "Football" ? "hidden" : ""
+            }  flex gap-4 p-2`}
+          >
+            {jerseysize.map((_, i) => (
+              <div
+                key={i}
+                className={` ${
+                  size === _ ? "bg-green-500 text-white" : ""
+                } bg-gray-100 p-2 rounded cursor-pointer `}
+                onClick={() => {
+                  setSize(_);
+                }}
+              >
+                {_.toUpperCase()}
+              </div>
+            ))}
           </div>
 
           <hr />
@@ -156,7 +173,7 @@ const SingleProduct = () => {
           <div className="flex items-center md:mt-0 py-2">
             <div className="flex items-center justify-between gap-2 w-full">
               <div
-                className="bg-black flex items-center justify-center text-white gap-2 rounded-md p-2 w-full cursor-pointer hover:scale-90 transition-all duration-500"
+                className="bg-black flex items-center justify-center text-white gap-2 rounded-md p-2 w-full cursor-pointer     hover:scale-90 transition-all duration-500"
                 onClick={() => {
                   if (!user) {
                     navigate("/login");

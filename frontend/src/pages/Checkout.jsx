@@ -215,8 +215,8 @@ const Checkout = () => {
                 </div>
               ) : (
                 <div>
-                  <p>Address: {user?.address || "No address provided"}</p>
-                  <p>Phone: +91 {user?.phone || "No phone number provided"}</p>
+                  <p>Address: {address || "No address provided"}</p>
+                  <p>Phone: +91 {phone || "No phone number provided"}</p>
                   <button
                     onClick={() => setIsEditing(true)}
                     className="mt-2 text-green-500 hover:underline"
