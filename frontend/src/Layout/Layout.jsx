@@ -14,12 +14,12 @@ import Subheader from "../components/Subheader";
 
 const Layout = () => {
   const { user, data, cart } = useContext(UserContext);
-  // console.log(cart?.cart?.items?.length);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [searchProduct, setSearchProduct] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false); // Track search input focus
 
   const handleSearch = (name) => {
     const trimmedName = name.trim().toLowerCase();
@@ -35,6 +35,11 @@ const Layout = () => {
 
   return (
     <div>
+      {/* Overlay and Blur effect */}
+      {isSearchActive && (
+        <div className="fixed inset-0 bg-black opacity-50 z-40" />
+      )}
+
       {/* Navigation bar */}
       <div className="p-4 bg-white flex items-center justify-between border sm:sticky top-0 z-50 shadow-md">
         {/* logo */}
@@ -54,6 +59,8 @@ const Layout = () => {
             className="outline-none rounded-md w-full bg-transparent"
             placeholder="Real Madrid Kit"
             value={search}
+            onFocus={() => setIsSearchActive(true)} // Set search active on focus
+            onBlur={() => setIsSearchActive(false)} // Reset on blur
             onChange={(e) => {
               setSearch(e.target.value);
               handleSearch(e.target.value); // Update search results on input change
@@ -74,7 +81,7 @@ const Layout = () => {
             {searchProduct.length > 0 && search.length > 0 ? (
               <div>
                 <p className="p-2 font-bold">Search Results</p>
-                <div>
+                <div className="max-h-[200px] overflow-y-scroll">
                   {searchProduct.map((item) => (
                     <div
                       key={item._id}
@@ -134,7 +141,7 @@ const Layout = () => {
           {user?.avatar ? (
             <img
               src={user?.avatar}
-              alt=""
+              alt="user-avatar"
               className="rounded-full h-8 w-8 cursor-pointer"
               onClick={() => {
                 if (!user) {
