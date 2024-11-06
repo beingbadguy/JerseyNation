@@ -26,7 +26,7 @@ const UserOrder = () => {
       //   console.log(response);
     },
   });
-  console.log(orders);
+  // console.log(orders);
 
   //   orders?.map((item) => {
   //     console.log(item);
