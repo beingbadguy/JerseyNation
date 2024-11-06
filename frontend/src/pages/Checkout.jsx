@@ -90,9 +90,11 @@ const Checkout = () => {
 
   const createOrderHandler = () => {
     if (!address || !phone) {
+      setIsEditing(true);
       setError("Please fill out all required fields.");
       return;
     } else {
+      setIsEditing(false);
       setCreating(true);
       setTimeout(() => {
         createOrder.mutate();
