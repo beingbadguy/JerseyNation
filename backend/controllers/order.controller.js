@@ -146,7 +146,9 @@ export const getUserOrder = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const orders = await Order.find({ user: userId }).populate("items.product");
+    const orders = await Order.find({ user: userId })
+      .populate("items.product")
+      .sort({ createdAt: -1 });
     res.status(200).json(orders);
   } catch (error) {
     console.error(error);

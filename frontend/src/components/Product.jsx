@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Product = () => {
   const navigate = useNavigate();
-  const { data, likeHandler, wishlist,user } = useContext(UserContext);
+  const { data, likeHandler, wishlist, user } = useContext(UserContext);
   const wishArr = wishlist?.wishlist?.items;
 
   // Check if a product is liked (exists in wishlist)

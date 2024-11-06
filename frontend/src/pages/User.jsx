@@ -134,7 +134,7 @@ const User = () => {
           )}
 
           <div className="relative">
-            <div className="font-bold text-xl sm:text-2xl flex gap-1 items-center" >
+            <div className="font-bold text-xl sm:text-2xl flex gap-1 items-center">
               {user?.name} <GoVerified className="text-blue-400 text-lg" />
             </div>
             <p className="text-sm sm:text-md">{user?.email}</p>
