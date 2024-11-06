@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { IoIosFootball } from "react-icons/io";
 import { MdArrowRightAlt } from "react-icons/md";
 
-{/* <MdArrowRightAlt />; */}
+{
+  /* <MdArrowRightAlt />; */
+}
 
 const Hero2 = () => {
   const navigate = useNavigate();
 
   return (
-    <div className=" mt-2 h-[500px] flex flex-col items-center justify-center gap-5 border">
+    <div className=" mt-2 h-[500px] flex flex-col items-center justify-center gap-5 ">
       <div className="flex items-center  p-1 gap-1 bg-yellow-50 text-yellow-500 shadow-inner rounded-md">
-        JerseyNation Season  <IoIosFootball />
+        JerseyNation Season <IoIosFootball />
       </div>
       <div className=" w-full  flex flex-col items-center justify-center text-center text-black space-y-4 ">
         <h1 className="text-3xl sm:text-3xl md:text-6xl font-bold">
