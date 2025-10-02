@@ -27,4 +27,13 @@ Built with modern technologies and clean architecture, it provides seamless auth
 
 ---
 
-## 📂 Project Structure
+## 👨‍💻 Author
+
+**Aman**  
+Full Stack Developer 🚀  
+
+- 🌐 Portfolio: [amancodes.in](https://amancodes.in)  
+- 💼 LinkedIn: [linkedin.com/in/amancodes](https://linkedin.com/in/amancodes)  
+- 📧 Email: authorisedaman@gmail.com  
+
+---
